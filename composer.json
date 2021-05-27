@@ -1,0 +1,30 @@
+{
+	"name": "sunkan/dictus",
+	"description": "Date utility classes",
+	"type": "library",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Andreas Sundqvist",
+			"email": "andreas@stefna.is"
+		}
+	],
+	"require": {
+		"php": "^8.0",
+		"ext-json": "*"
+	},
+	"require-dev": {
+		"stefna/codestyle": "^1.5",
+		"phpstan/phpstan": "^0.12.62"
+	},
+	"autoload": {
+		"psr-4": {
+			"Sunkan\\Dictus\\": "src/"
+		}
+	},
+	"config": {
+		"platform-check": false
+	}
+}
