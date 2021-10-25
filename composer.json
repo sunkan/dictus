@@ -13,7 +13,8 @@
 	],
 	"require": {
 		"php": "^8.0",
-		"ext-json": "*"
+		"ext-json": "*",
+		"phpunit/phpunit": "^9.5"
 	},
 	"require-dev": {
 		"stefna/codestyle": "^1.5",

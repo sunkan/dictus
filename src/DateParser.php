@@ -27,7 +27,7 @@ final class DateParser
 			throw new \InvalidArgumentException('Invalid date. Expected "Y-m-d"');
 		}
 
-		return $dateObj;
+		return $dateObj->setTime(0, 0, 0);
 	}
 
 	public static function fromTimestamp(int $timestamp): \DateTimeImmutable
