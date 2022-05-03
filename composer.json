@@ -13,7 +13,8 @@
 	],
 	"require": {
 		"php": "^8.0",
-		"ext-json": "*"
+		"ext-json": "*",
+		"stella-maris/clock": "^0.1.4"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^9.5",
