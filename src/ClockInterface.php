@@ -2,7 +2,7 @@
 
 namespace Sunkan\Dictus;
 
-interface ClockInterface
+interface ClockInterface extends \StellaMaris\Clock\ClockInterface
 {
 	public function now(): \DateTimeImmutable;
 }
