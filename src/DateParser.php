@@ -8,10 +8,10 @@ final class DateParser
 	{
 		$colonCount = substr_count($time, ':');
 		if ($colonCount === 1) {
-			$dateObj = \DateTimeImmutable::createFromFormat('H:i', $time);
+			$dateObj = Time::createFromFormat('H:i', $time);
 		}
 		else {
-			$dateObj = \DateTimeImmutable::createFromFormat('H:i:s', $time);
+			$dateObj = Time::createFromFormat('H:i:s', $time);
 		}
 		if (!$dateObj) {
 			throw new \InvalidArgumentException('Invalid time. Expected "H:i" or "H:i:s"');
