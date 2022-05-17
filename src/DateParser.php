@@ -22,7 +22,7 @@ final class DateParser
 
 	public static function fromDay(string $date): \DateTimeImmutable
 	{
-		$dateObj = \DateTimeImmutable::createFromFormat('Y-m-d', $date);
+		$dateObj = Date::createFromFormat('Y-m-d', $date);
 		if (!$dateObj) {
 			throw new \InvalidArgumentException('Invalid date. Expected "Y-m-d"');
 		}
