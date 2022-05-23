@@ -51,4 +51,23 @@ final class DateParser
 
 		return $dateObj;
 	}
+
+	public static function intervalFromTime(string $time): \DateInterval
+	{
+		$colonCount = substr_count($time, ':');
+		$sec = 0;
+		if ($colonCount === 1) {
+			[$hour, $min] = array_map('intval', explode(':', $time));
+		}
+		else {
+			[$hour, $min, $sec] = array_map('intval', explode(':', $time));
+		}
+
+		try {
+			return new \DateInterval(sprintf('PT%dH%dM%dS', $hour, $min, $sec));
+		}
+		catch (\Throwable) {
+			throw new \InvalidArgumentException('Invalid format. Expected "H:i" or "H:i:s"');
+		}
+	}
 }

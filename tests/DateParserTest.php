@@ -1,6 +1,7 @@
 <?php
 
 
+use Sunkan\Dictus\DateIntervalFormatter;
 use Sunkan\Dictus\DateParser;
 use PHPUnit\Framework\TestCase;
 
@@ -45,6 +46,16 @@ class DateParserTest extends TestCase
 	}
 
 	/**
+	 * @dataProvider intervalTimeInputs
+	 */
+	public function testIntervalFromString(string $input, string $formattedOutput): void
+	{
+		$interval = DateParser::intervalFromTime($input);
+
+		$this->assertSame($formattedOutput, DateIntervalFormatter::formatInterval($interval));
+	}
+
+	/**
 	 * @return string[][]
 	 */
 	public function dayStrings(): array
@@ -83,6 +94,35 @@ class DateParserTest extends TestCase
 			'now' => [
 				'now',
 				date('Y-m-d H:i:s'),
+			],
+		];
+	}
+
+	/**
+	 * @return string[][]
+	 */
+	public function intervalTimeInputs(): array
+	{
+		return [
+			'simple' => [
+				'03:21',
+				'PT3H21M',
+			],
+			'seconds' => [
+				'04:30:45',
+				'PT4H30M45S',
+			],
+			'0 hours' => [
+				'00:30:45',
+				'PT30M45S',
+			],
+			'0 min' => [
+				'01:00:45',
+				'PT1H45S',
+			],
+			'only sec' => [
+				'00:00:45',
+				'PT45S',
 			],
 		];
 	}
