@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 use Sunkan\Dictus\DateIntervalFormatter;
@@ -53,6 +53,26 @@ class DateParserTest extends TestCase
 		$interval = DateParser::intervalFromTime($input);
 
 		$this->assertSame($formattedOutput, DateIntervalFormatter::formatInterval($interval));
+	}
+
+	/**
+	 * @dataProvider invalidDateFormat
+	 */
+	public function testInvalidDateFormat(string $input): void
+	{
+		$this->expectException(InvalidArgumentException::class);
+
+		DateParser::fromDay($input);
+	}
+
+	/**
+	 * @dataProvider invalidTimeFormat
+	 */
+	public function testInvalidTimeFormat(string $input): void
+	{
+		$this->expectException(InvalidArgumentException::class);
+
+		DateParser::fromTime($input);
 	}
 
 	/**
@@ -124,6 +144,29 @@ class DateParserTest extends TestCase
 				'00:00:45',
 				'PT45S',
 			],
+		];
+	}
+
+	/**
+	 * @return string[][]
+	 */
+	public function invalidTimeFormat(): array
+	{
+		return [
+			'missing minutes' => ['11'],
+			'to many parts' => ['11:11:11:11'],
+		];
+	}
+
+	/**
+	 * @return string[][]
+	 */
+	public function invalidDateFormat(): array
+	{
+		return [
+			'iceland format' => ['01-07-22'],
+			'date without -' => ['20220701'],
+			'none numeric' => ['aaaa-bb-cc'],
 		];
 	}
 }
