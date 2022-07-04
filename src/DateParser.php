@@ -22,6 +22,14 @@ final class DateParser
 
 	public static function fromDay(string $date): \DateTimeImmutable
 	{
+		$parts = explode('-', $date);
+		if (count($parts) !== 3) {
+			throw new \InvalidArgumentException('Invalid date. Expected "Y-m-d"');
+		}
+		if (strlen($parts[0]) !== 4) {
+			throw new \InvalidArgumentException('Invalid date. Expected "Y-m-d"');
+		}
+
 		$dateObj = Date::createFromFormat('Y-m-d', $date);
 		if (!$dateObj) {
 			throw new \InvalidArgumentException('Invalid date. Expected "Y-m-d"');
