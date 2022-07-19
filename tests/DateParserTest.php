@@ -144,6 +144,10 @@ class DateParserTest extends TestCase
 				'00:00:45',
 				'PT45S',
 			],
+			'zero' => [
+				'00:00',
+				'PT0S',
+			]
 		];
 	}
 

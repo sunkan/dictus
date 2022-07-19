@@ -42,6 +42,9 @@ final class DateIntervalFormatter
 				}
 			}
 		}
+		if ($string === 'P') {
+			$string = 'PT0S';
+		}
 
 		return $string;
 	}
