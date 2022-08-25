@@ -76,6 +76,17 @@ class DateParserTest extends TestCase
 	}
 
 	/**
+	 * @dataProvider intervalInSeconds
+	 */
+	public function testIntervalFromSeconds(int $seconds, string $expectedFormat): void
+	{
+		$formatter = new DateIntervalFormatter();
+		$interval = DateParser::intervalFromSeconds($seconds);
+		$this->assertSame($expectedFormat, $formatter->format($interval));
+		$this->assertSame($seconds, $formatter->getSeconds($interval));
+	}
+
+	/**
 	 * @return string[][]
 	 */
 	public function dayStrings(): array
@@ -171,6 +182,19 @@ class DateParserTest extends TestCase
 			'iceland format' => ['01-07-22'],
 			'date without -' => ['20220701'],
 			'none numeric' => ['aaaa-bb-cc'],
+		];
+	}
+
+	/**
+	 * @return array<string, array{int, string}>
+	 */
+	public function intervalInSeconds(): array
+	{
+		return [
+			'1 min' => [60, 'PT1M'],
+			'1 hour 15 min 30 seconds' => [4530, 'PT1H15M30S'],
+			'1 day +' => [87942, 'P1DT25M42S'],
+			'1 month +' => [3541243, 'P1M10DT23H40M43S'],
 		];
 	}
 }

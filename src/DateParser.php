@@ -78,4 +78,9 @@ final class DateParser
 			throw new \InvalidArgumentException('Invalid format. Expected "H:i" or "H:i:s"');
 		}
 	}
+
+	public static function intervalFromSeconds(int $seconds): \DateInterval
+	{
+		return new DateTimeInterval('PT' . $seconds . 'S');
+	}
 }

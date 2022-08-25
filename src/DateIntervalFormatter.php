@@ -48,4 +48,17 @@ final class DateIntervalFormatter
 
 		return $string;
 	}
+
+	public function getSeconds(\DateInterval $interval): int
+	{
+		/* Keep in mind that a year is seen in this class as 365 days, and a month is seen as 30 days.
+		   It is not possible to calculate how many days are in a given year or month without a point of
+		   reference in time.*/
+		return ($interval->y * 365 * 24 * 60 * 60) +
+			($interval->m * 30 * 24 * 60 * 60) +
+			($interval->d * 24 * 60 * 60) +
+			($interval->h * 60 * 60) +
+			($interval->i * 60) +
+			$interval->s;
+	}
 }
