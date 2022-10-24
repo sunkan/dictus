@@ -49,6 +49,24 @@ final class DateIntervalFormatter
 		return $string;
 	}
 
+	public function formatAsTime(\DateInterval $interval): string
+	{
+		return self::formatIntervalAsTime($interval);
+	}
+
+	public static function formatIntervalAsTime(\DateInterval $interval): string
+	{
+		$hours = $interval->h;
+		if ($interval->m) {
+			$hours += ($interval->m * 30) * 24;
+		}
+		if ($interval->d) {
+			$hours += $interval->d * 24;
+		}
+
+		return sprintf('%02d:%02d', $hours, $interval->i);
+	}
+
 	public function getSeconds(\DateInterval $interval): int
 	{
 		/* Keep in mind that a year is seen in this class as 365 days, and a month is seen as 30 days.
