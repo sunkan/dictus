@@ -60,6 +60,19 @@ final class DateParser
 		return $dateObj;
 	}
 
+	public static function tryString(?string $date): ?\DateTimeImmutable
+	{
+		if (!$date) {
+			return null;
+		}
+		try {
+			return new \DateTimeImmutable($date);
+		}
+		catch (\Exception $e) {
+			return null;
+		}
+	}
+
 	public static function intervalFromTime(string $time): \DateInterval
 	{
 		$colonCount = substr_count($time, ':');
