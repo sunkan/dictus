@@ -46,6 +46,16 @@ class DateParserTest extends TestCase
 	}
 
 	/**
+	 * @dataProvider invalidDateTimeFormat
+	 */
+	public function testInvalidFromString(string $rawDate): void
+	{
+		$this->expectException(\InvalidArgumentException::class);
+
+		$date = DateParser::fromString($rawDate);
+	}
+
+	/**
 	 * @dataProvider intervalTimeInputs
 	 */
 	public function testIntervalFromString(string $input, string $formattedOutput): void
@@ -84,6 +94,27 @@ class DateParserTest extends TestCase
 		$interval = DateParser::intervalFromSeconds($seconds);
 		$this->assertSame($expectedFormat, $formatter->format($interval));
 		$this->assertSame($seconds, $formatter->getSeconds($interval));
+	}
+
+	/**
+	 * @dataProvider mixedDateStrings
+	 */
+	public function testTryString(string $rawDate, string $expected): void
+	{
+		$date = DateParser::tryString($rawDate);
+
+		$this->assertNotNull($date);
+		$this->assertSame($expected, $date->format('Y-m-d H:i:s'));
+	}
+
+	/**
+	 * @dataProvider invalidDateTimeFormat
+	 */
+	public function testInvalidTryString(string $rawDate): void
+	{
+		$date = DateParser::tryString($rawDate);
+
+		$this->assertNull($date);
 	}
 
 	/**
@@ -181,6 +212,17 @@ class DateParserTest extends TestCase
 		return [
 			'iceland format' => ['01-07-22'],
 			'date without -' => ['20220701'],
+			'none numeric' => ['aaaa-bb-cc'],
+		];
+	}
+
+	/**
+	 * @return string[][]
+	 */
+	public function invalidDateTimeFormat(): array
+	{
+		return [
+			'none date' => ['random string'],
 			'none numeric' => ['aaaa-bb-cc'],
 		];
 	}
