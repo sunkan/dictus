@@ -7,6 +7,17 @@ use IntlDateFormatter;
 
 final class LocalizedFormatter implements Formatter
 {
+	private const INTL_FORMATS = [
+		'%a' => 'EEE',    // An abbreviated textual representation of the day	Sun through Sat
+		'%A' => 'EEEE',    // A full textual representation of the day	Sunday through Saturday
+		'%b' => 'MMM',    // Abbreviated month name, based on the locale	Jan through Dec
+		'%B' => 'MMMM',    // Full month name, based on the locale	January through December
+		'%h' => 'MMM',    // Abbreviated month name, based on the locale (an alias of %b)	Jan through Dec
+	];
+
+	/** @var array<string, IntlDateFormatter> */
+	private static array $intlCache = [];
+
 	public function __construct(
 		private string $local,
 		private string $format,
@@ -21,47 +32,17 @@ final class LocalizedFormatter implements Formatter
 	private function strftime(string $format, DateTimeImmutable $timestamp, string $local): string
 	{
 		// remove trailing part not supported by ext-intl locale
+		/** @var string $locale */
 		$locale = preg_replace('/[^\w-].*$/', '', $local);
 
-		$intlFormats = [
-			'%a' => 'EEE',    // An abbreviated textual representation of the day	Sun through Sat
-			'%A' => 'EEEE',    // A full textual representation of the day	Sunday through Saturday
-			'%b' => 'MMM',    // Abbreviated month name, based on the locale	Jan through Dec
-			'%B' => 'MMMM',    // Full month name, based on the locale	January through December
-			'%h' => 'MMM',    // Abbreviated month name, based on the locale (an alias of %b)	Jan through Dec
-		];
-
-		$intlFormatter = static function (DateTimeImmutable $timestamp, string $format) use ($intlFormats, $locale) {
-			$dateType = IntlDateFormatter::FULL;
-			$timeType = IntlDateFormatter::FULL;
-			$pattern = '';
-
-			switch ($format) {
-				// %c = Preferred date and time stamp based on locale
-				// Example: Tue Feb 5 00:45:10 2009 for February 5, 2009 at 12:45:10 AM
-				case '%c':
-					$dateType = IntlDateFormatter::LONG;
-					$timeType = IntlDateFormatter::SHORT;
-					break;
-
-				// %x = Preferred date representation based on locale, without the time
-				// Example: 02/05/09 for February 5, 2009
-				case '%x':
-					$dateType = IntlDateFormatter::SHORT;
-					$timeType = IntlDateFormatter::NONE;
-					break;
-
-				// Localized time format
-				case '%X':
-					$dateType = IntlDateFormatter::NONE;
-					$timeType = IntlDateFormatter::MEDIUM;
-					break;
-
-				default:
-					$pattern = $intlFormats[$format];
+		$intlFormatter = function (DateTimeImmutable $timestamp, string $format) use ($locale) {
+			$pattern = self::INTL_FORMATS[$format] ?? '';
+			$formatter = $this->getIntlFormatter($locale, $format);
+			if ($pattern) {
+				$formatter->setPattern($pattern);
 			}
-
-			return (new IntlDateFormatter($locale, $dateType, $timeType, $timestamp->getTimezone(), null, $pattern))->format($timestamp);
+			$formatter->setTimeZone($timestamp->getTimezone());
+			return $formatter->format($timestamp);
 		};
 
 		$spacePadding = static function (int $padding) {
@@ -74,7 +55,7 @@ final class LocalizedFormatter implements Formatter
 			return static fn(DateTimeImmutable $d) => $modifier($d->format($format));
 		};
 
-		/** @var array<string, string|callable(DateTimeImmutable $date, string $pattern): string> */
+		/** @var array<string, string|callable(DateTimeImmutable $date, string $pattern): string> $translationTable */
 		$translationTable = [
 			// Day
 			'%a' => $intlFormatter,
@@ -184,4 +165,38 @@ final class LocalizedFormatter implements Formatter
 		return str_replace('%%', '%', $out);
 	}
 
+	private function getIntlFormatter(string $locale, string $format): IntlDateFormatter
+	{
+		$dateType = IntlDateFormatter::FULL;
+		$timeType = IntlDateFormatter::FULL;
+
+		switch ($format) {
+			// %c = Preferred date and time stamp based on locale
+			// Example: Tue Feb 5 00:45:10 2009 for February 5, 2009 at 12:45:10 AM
+			case '%c':
+				$dateType = IntlDateFormatter::LONG;
+				$timeType = IntlDateFormatter::SHORT;
+				break;
+
+			// %x = Preferred date representation based on locale, without the time
+			// Example: 02/05/09 for February 5, 2009
+			case '%x':
+				$dateType = IntlDateFormatter::SHORT;
+				$timeType = IntlDateFormatter::NONE;
+				break;
+
+			// Localized time format
+			case '%X':
+				$dateType = IntlDateFormatter::NONE;
+				$timeType = IntlDateFormatter::MEDIUM;
+				break;
+		}
+
+		$key = $dateType . ':' . $timeType . ':' . $locale;
+		if (!isset(self::$intlCache[$key])) {
+			self::$intlCache[$key] = new IntlDateFormatter($locale, $dateType, $timeType);
+		}
+
+		return self::$intlCache[$key];
+	}
 }
