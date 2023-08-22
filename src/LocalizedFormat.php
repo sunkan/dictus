@@ -2,6 +2,9 @@
 
 namespace Sunkan\Dictus;
 
+/**
+ * @deprecated Use your own constants for local formats
+ */
 interface LocalizedFormat
 {
 	public const DATE = '%d.%m.%Y';

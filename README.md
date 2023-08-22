@@ -14,15 +14,18 @@ This is a small library to help with date formatting and keeping a consistent cl
 use Sunkan\Dictus\DateTimeFormat;
 use Sunkan\Dictus\DateTimeFormatter;
 use Sunkan\Dictus\LocalizedFormat;
-use Sunkan\Dictus\LocalizedFormatter;
+use Sunkan\Dictus\LocalizedStrftimeFormatter;
+use Sunkan\Dictus\LocalizedDateTimeFormatter;
 
 $jsonDateFormatter = new DateTimeFormatter(DateTimeFormat::JSON);
-$localizedDateFormatter = new LocalizedFormatter('sv_SE', LocalizedFormat::DATETIME);
+$localizedStrftimeFormatter = new LocalizedStrftimeFormatter('sv_SE', LocalizedFormat::DATETIME);
+$localizedDateTimeFormatter = new LocalizedDateTimeFormatter('sv_SE', 'l d F [kl.] H:i');
 
 $date = new DateTimeImmutable();
 
 echo $jsonDateFormatter->format($date);
-echo $localizedDateFormatter->format($date);
+echo $localizedStrftimeFormatterFormatter->format($date); // 21.08.2023 16:26
+echo $localizedDateTimeFormatter->format($date); // måndag 21 augusti kl. 16:26
 ```
 ### Clock
 
