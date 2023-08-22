@@ -4,6 +4,48 @@ namespace Sunkan\Dictus;
 
 final class DateParser
 {
+	public static function fromUnknown(string|int|\DateTimeInterface $date): \DateTimeImmutable
+	{
+		if ($date instanceof \DateTimeImmutable) {
+			return $date;
+		}
+		if ($date instanceof \DateTimeInterface) {
+			return \DateTimeImmutable::createFromInterface($date);
+		}
+		if (is_int($date) || is_numeric($date)) {
+			$date = \DateTimeImmutable::createFromFormat('U', (string)$date);
+			if (!$date) {
+				throw new \InvalidArgumentException('Failed to parse timestamp');
+			}
+			return $date;
+		}
+		try {
+			return new \DateTimeImmutable($date);
+		}
+		catch (\Throwable $e) {
+			throw new \InvalidArgumentException('Failed to parse date', 0, $e);
+		}
+	}
+
+	public static function tryUnknown(string|int|\DateTimeInterface $date): ?\DateTimeImmutable
+	{
+		if ($date instanceof \DateTimeImmutable) {
+			return $date;
+		}
+		if ($date instanceof \DateTimeInterface) {
+			return \DateTimeImmutable::createFromInterface($date);
+		}
+		if (is_int($date) || is_numeric($date)) {
+			return \DateTimeImmutable::createFromFormat('U', (string)$date) ?: null;
+		}
+		try {
+			return new \DateTimeImmutable($date);
+		}
+		catch (\Throwable) {
+			return null;
+		}
+	}
+
 	public static function fromTime(string $time): \DateTimeImmutable
 	{
 		$colonCount = substr_count($time, ':');

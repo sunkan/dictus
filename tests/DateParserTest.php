@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 
+use Sunkan\Dictus\Date;
 use Sunkan\Dictus\DateIntervalFormatter;
 use Sunkan\Dictus\DateParser;
 use PHPUnit\Framework\TestCase;
@@ -115,6 +116,83 @@ class DateParserTest extends TestCase
 		$date = DateParser::tryString($rawDate);
 
 		$this->assertNull($date);
+	}
+
+	/**
+	 * @dataProvider validDates
+	 */
+	public function testTryUnknown(string|int|\DateTimeInterface $inputDate): void
+	{
+		$date = DateParser::tryUnknown($inputDate);
+
+		$this->assertInstanceOf(\DateTimeImmutable::class, $date);
+	}
+
+	/**
+	 * @dataProvider invalidDates
+	 */
+	public function testInvalidTryUnknown(string|int $inputDate): void
+	{
+		$date = DateParser::tryUnknown($inputDate);
+		$this->assertNull($date);
+	}
+
+	/**
+	 * @dataProvider validDates
+	 */
+	public function testFromUnknown(string|int|\DateTimeInterface $inputDate): void
+	{
+		$date = DateParser::fromUnknown($inputDate);
+
+		$this->assertInstanceOf(\DateTimeImmutable::class, $date);
+	}
+
+	/**
+	 * @dataProvider invalidDates
+	 */
+	public function testInvalidFromUnknown(string|int $inputDate): void
+	{
+		$this->expectException(\InvalidArgumentException::class);
+		DateParser::fromUnknown($inputDate);
+	}
+
+	/**
+	 * @return string[][]
+	 */
+	public function invalidDates(): array
+	{
+		return [
+			'float string' => ['1593053498.1000'],
+			'none date' => ['random string'],
+			'none numeric' => ['aaaa-bb-cc'],
+		];
+	}
+
+	/**
+	 * @return array<string, array{0: string|int|\DateTimeInterface}>
+	 */
+	public function validDates(): array
+	{
+		return [
+			'string date' => [
+				'2021-10-19 00:00:00',
+			],
+			'dateTime' => [
+				new DateTime('2020-04-28 12:12:42'),
+			],
+			'dateTimeImmutable' => [
+				new DateTimeImmutable('2020-04-28 12:12:42'),
+			],
+			'customDateClass' => [
+				new Date('2020-04-28'),
+			],
+			'unix timestamp' => [
+				1692687216,
+			],
+			'unix timestamp as string' => [
+				'1593053498',
+			]
+		];
 	}
 
 	/**
