@@ -4,7 +4,7 @@ namespace Sunkan\Dictus;
 
 use IntlDateFormatter;
 
-final class LocalizedDateTimeFormatter implements Formatter
+final class LocalizedDateTimeFormatter implements LocalizedFormatter, MutableFormatter
 {
 	/**
 	 * @var array<string, array{
@@ -62,8 +62,8 @@ final class LocalizedDateTimeFormatter implements Formatter
 	private static array $intlCache = [];
 
 	public function __construct(
-		private string $format,
 		private string $local,
+		private string $format,
 	) {}
 
 	public function setFormat(string $format): void
@@ -71,12 +71,17 @@ final class LocalizedDateTimeFormatter implements Formatter
 		$this->format = $format;
 	}
 
+	public function setLocal(string $local): void
+	{
+		$this->local = $local;
+	}
+
 	public function format(\DateTimeInterface $date): string
 	{
 		return $this->formatTimestamp($this->format, $date, $this->local);
 	}
 
-	function formatTimestamp(string $format, \DateTimeInterface $timestamp, string $locale): string
+	public function formatTimestamp(string $format, \DateTimeInterface $timestamp, string $locale): string
 	{
 		$dateFormatToIntlFormatMap = [
 			'D' => 'EEE',

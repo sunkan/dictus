@@ -8,7 +8,7 @@ final class LocalizedDateTimeFormatterTest extends TestCase
 {
 	public function testReadableFormat(): void
 	{
-		$formatter = new LocalizedDateTimeFormatter('l d. F [kl.] H:i', 'is_IS');
+		$formatter = new LocalizedDateTimeFormatter('is_IS', 'l d. F [kl.] H:i');
 
 		$date = new DateTimeImmutable('2023-08-21 16:26:14');
 
