@@ -4,5 +4,5 @@ namespace Sunkan\Dictus;
 
 interface LocalizedFormatter extends Formatter
 {
-	public function setLocal(string $local): void;
+	public function setLocale(string $locale): void;
 }

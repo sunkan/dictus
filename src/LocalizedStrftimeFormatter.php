@@ -19,13 +19,13 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 	private static array $intlCache = [];
 
 	public function __construct(
-		private string $local,
+		private string $locale,
 		private string $format,
 	) {}
 
-	public function setLocal(string $local): void
+	public function setLocale(string $local): void
 	{
-		$this->local = $local;
+		$this->locale = $local;
 	}
 
 	public function setFormat(string $format): void
@@ -36,7 +36,7 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 	public function format(\DateTimeInterface $date): string
 	{
 		$date = DateTimeImmutable::createFromInterface($date);
-		return $this->strftime($this->format, $date, $this->local);
+		return $this->strftime($this->format, $date, $this->locale);
 	}
 
 	private function strftime(string $format, DateTimeImmutable $timestamp, string $local): string
