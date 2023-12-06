@@ -3,7 +3,7 @@
 namespace Sunkan\Dictus;
 
 /**
- * @deprecated Use your own constants for local formats
+ * @deprecated Use your own constants for locale formats
  */
 interface LocalizedFormat
 {
