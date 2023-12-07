@@ -24,7 +24,7 @@ final class StrftimeConvertTest extends TestCase
 			['%R %d. %B %Y', 'H:i d. F Y'],
 			['%c %X', 'LLL LTS'],
 			['[kl.] %R', '[kl.] H:i'],
-			['[kl.] %%', '[kl.] \%'],
+			['[kl.] %% %n %t', '[kl.] \% \n \t'],
 		];
 	}
 }

@@ -43,6 +43,8 @@ final class StrftimeToDateTimeFormat
 		'%F' => 'Y-m-d', // Same as "%Y-%m-%d" (commonly used in database datestamps)	Example: 2009-02-05 for February 5, 2009
 		'%x' => 'L', // Preferred date representation based on locale, without the time	Example: 02/05/09 for February 5, 2009
 		'%%' => '\%',
+		'%n' => '\n',
+		'%t' => '\t',
 	];
 
 	public static function convert(string $format): string
