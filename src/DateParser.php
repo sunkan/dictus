@@ -46,7 +46,7 @@ final class DateParser
 		}
 	}
 
-	public static function fromTime(string $time): \DateTimeImmutable
+	public static function fromTime(string $time): Time
 	{
 		$colonCount = substr_count($time, ':');
 		if ($colonCount === 1) {
@@ -59,10 +59,11 @@ final class DateParser
 			throw new \InvalidArgumentException('Invalid time. Expected "H:i" or "H:i:s"');
 		}
 
+		/** @noinspection PhpIncompatibleReturnTypeInspection - phpstorm is wrong */
 		return $dateObj;
 	}
 
-	public static function fromDay(string $date): \DateTimeImmutable
+	public static function fromDay(string $date): Date
 	{
 		$parts = explode('-', $date);
 		if (count($parts) !== 3) {
@@ -77,6 +78,7 @@ final class DateParser
 			throw new \InvalidArgumentException('Invalid date. Expected "Y-m-d"');
 		}
 
+		/** @noinspection PhpIncompatibleReturnTypeInspection - phpstorm is wrong */
 		return $dateObj->setTime(0, 0, 0);
 	}
 
