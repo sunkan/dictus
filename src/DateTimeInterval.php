@@ -12,6 +12,22 @@ final class DateTimeInterval extends \DateInterval
 		}
 	}
 
+	public function merge(\DateInterval $interval): self
+	{
+		$newInterval = clone $this;
+		$newInterval->y += $interval->y;
+		$newInterval->m += $interval->m;
+		$newInterval->d += $interval->d;
+		$newInterval->h += $interval->h;
+		$newInterval->i += $interval->i;
+		$newInterval->s += $interval->s;
+		$newInterval->days += $interval->days;
+
+		$newInterval->recalculate();
+
+		return $newInterval;
+	}
+
 	private function toSeconds(): int
 	{
 		/* Keep in mind that a year is seen in this class as 365 days, and a month is seen as 30 days.
