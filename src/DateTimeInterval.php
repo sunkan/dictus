@@ -21,7 +21,6 @@ final class DateTimeInterval extends \DateInterval
 		$newInterval->h += $interval->h;
 		$newInterval->i += $interval->i;
 		$newInterval->s += $interval->s;
-		$newInterval->days += $interval->days;
 
 		$newInterval->recalculate();
 
