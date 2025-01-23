@@ -156,6 +156,31 @@ class DateParserTest extends TestCase
 		DateParser::fromUnknown($inputDate);
 	}
 
+	public function testMsEpoch(): void
+	{
+		$timestamp = 13382097973282;
+		$date = DateParser::fromMsEpoch($timestamp);
+
+		$this->assertSame('2025-01-23 09:26:13.282', $date->format('Y-m-d H:i:s.v'));
+	}
+
+	public function testMilliTimestampString(): void
+	{
+		$timestamp = '1660338149.654';
+		$date = DateParser::fromMilliTimestamp($timestamp);
+
+		$this->assertSame('2022-08-12 21:02:29.654', $date->format('Y-m-d H:i:s.v'));
+	}
+
+	public function testInvalidMilliTimestampString(): void
+	{
+		$timestamp = '166.0338149.654';
+
+		$this->expectException(\InvalidArgumentException::class);
+
+		DateParser::fromMilliTimestamp($timestamp);
+	}
+
 	/**
 	 * @return string[][]
 	 */

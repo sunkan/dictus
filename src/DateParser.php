@@ -4,6 +4,8 @@ namespace Sunkan\Dictus;
 
 final class DateParser
 {
+	private const MS_EPOCH = 11644473600000;
+
 	public static function fromUnknown(string|int|\DateTimeInterface $date): \DateTimeImmutable
 	{
 		if ($date instanceof \DateTimeImmutable) {
@@ -90,6 +92,28 @@ final class DateParser
 		}
 
 		return $dateObj;
+	}
+
+	public static function fromMilliTimestamp(int|string $timestamp): \DateTimeImmutable
+	{
+		$timestamp = (string)$timestamp;
+		if (!str_contains($timestamp, '.')) {
+			$timestamp = substr($timestamp, 0, -3) . '.' . substr($timestamp, -3);
+		}
+
+		$dateObj = \DateTimeImmutable::createFromFormat('U.v', $timestamp);
+		if (!$dateObj) {
+			throw new \InvalidArgumentException('Invalid date. Expected timestamp');
+		}
+
+		return $dateObj;
+	}
+
+	public static function fromMsEpoch(int $timestamp): \DateTimeImmutable
+	{
+		$milliTimestamp = $timestamp - self::MS_EPOCH;
+
+		return self::fromMilliTimestamp($milliTimestamp);
 	}
 
 	public static function fromString(string $date): \DateTimeImmutable
