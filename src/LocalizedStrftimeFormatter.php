@@ -58,7 +58,7 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 		$spacePadding = static function (int $padding) {
 			return static fn(string $val) => sprintf('% ' . $padding . 'u', $val);
 		};
-		$dateFormat = static function (string $format, callable $modifier = null) {
+		$dateFormat = static function (string $format, null|callable $modifier = null) {
 			if (!$modifier) {
 				$modifier = static fn ($v) => $v;
 			}
