@@ -152,7 +152,7 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 
 			$replace = $translationTable[$pattern];
 
-			if (is_callable($replace)) {
+			if (!is_string($replace) && is_callable($replace)) {
 				$result = $replace($timestamp, $pattern);
 			}
 			else {
