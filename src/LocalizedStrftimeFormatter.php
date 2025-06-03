@@ -159,17 +159,11 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 				$result = $replace($timestamp, $pattern);
 			}
 
-			switch ($prefix) {
-				case '_':
-					// replace leading zeros with spaces but keep last char if also zero
-					return preg_replace('/\G0(?=.)/', ' ', $result);
-				case '#':
-				case '-':
-					// remove leading zeros but keep last char if also zero
-					return preg_replace('/^0+(?=.)/', '', $result);
-			}
-
-			return $result;
+			return match ($prefix) {
+				'_' => (string)preg_replace('/\G0(?=.)/', ' ', $result),
+				'#', '-' => (string)preg_replace('/^0+(?=.)/', '', $result),
+				default => $result,
+			};
 		}, $format);
 
 		return str_replace('%%', '%', $out);
