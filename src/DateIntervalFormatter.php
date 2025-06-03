@@ -7,14 +7,14 @@ final class DateIntervalFormatter
 	/**
 	 * The date properties.
 	 *
-	 * @var array<string, string>
+	 * @var array{'y': 'Y', 'm': 'M', 'd': 'D'}
 	 */
 	private static array $date = ['y' => 'Y', 'm' => 'M', 'd' => 'D'];
 
 	/**
 	 * The time properties.
 	 *
-	 * @var array<string, string>
+	 * @var array{'h': 'H', 'i': 'M', 's': 'S'}
 	 */
 	private static array $time = ['h' => 'H', 'i' => 'M', 's' => 'S'];
 

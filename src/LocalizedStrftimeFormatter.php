@@ -87,7 +87,7 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 				return sprintf('%02u', 1 + ($currentDay - $firstDay) / 7);
 			},
 			'%V' => 'W',
-			'%W' => function ($timestamp) {
+			'%W' => function (DateTimeImmutable $timestamp) {
 				// Number of weeks between date and first Monday of year
 				$currentDay = (int)$timestamp->format('z');
 				$firstDay = (int)$timestamp->modify('first monday of january')->format('z');
@@ -101,8 +101,8 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 			'%m' => 'm',
 
 			// Year - Century (-1): 19 for 20th century
-			'%C' => $dateFormat('Y', static fn ($v) => floor($v / 100)),
-			'%g' => $dateFormat('o', static fn ($v) => substr($v, -2)),
+			'%C' => $dateFormat('Y', static fn (string $v) => floor((int)$v / 100)),
+			'%g' => $dateFormat('o', static fn (string $v) => substr($v, -2)),
 			'%G' => 'o',
 			'%y' => 'y',
 			'%Y' => 'Y',
