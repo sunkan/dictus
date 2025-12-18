@@ -4,6 +4,18 @@ namespace Sunkan\Dictus;
 
 final class LocalizedDateTimeFormatter implements LocalizedFormatter, MutableFormatter
 {
+	private const LOCALIZED_SHORT_FORMATS = [
+		// Sorting this list correctly is important because of how we replace from it
+		'LTS',
+		'LT',
+		'LLLL',
+		'llll',
+		'LLL',
+		'lll',
+		'LL',
+		'll',
+		'L',
+	];
 	/** @var array<string, LocaleFormat> */
 	private static array $localFormats = [];
 
@@ -34,11 +46,21 @@ final class LocalizedDateTimeFormatter implements LocalizedFormatter, MutableFor
 
 	public function format(\DateTimeInterface $date): string
 	{
-		return $this->formatTimestamp($this->format, \DateTimeImmutable::createFromInterface($date), $this->locale);
+		return $this->formatTimestamp($this->format, \DateTimeImmutable::createFromInterface($date));
 	}
 
-	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp, string $locale): string
+	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string
 	{
+		foreach (self::LOCALIZED_SHORT_FORMATS as $localizedFormat) {
+			if (!str_contains($format, $localizedFormat)) {
+				continue;
+			}
+			$tmpFormat = $this->localeFormat->resolveFormat($localizedFormat);
+			if ($tmpFormat !== null) {
+				$format = str_replace($localizedFormat, $tmpFormat, $format);
+			}
+		}
+
 		$result = '';
 		$length = mb_strlen($format);
 		$inEscaped = false;
@@ -70,22 +92,8 @@ final class LocalizedDateTimeFormatter implements LocalizedFormatter, MutableFor
 				continue;
 			}
 			$localResult = $this->localeFormat->formatChar($char, $timestamp);
-			if ($localResult)  {
+			if ($localResult) {
 				$result .= $localResult;
-				continue;
-			}
-
-			$input = mb_substr($format, $i);
-			if ($char === 'L' && preg_match('/^(LTS|LT|L{1,4})/', $input, $match)) {
-				$code = $match[0];
-				$newFormat = $this->localeFormat->resolveFormat($code);
-				if ($newFormat) {
-					$result .= $this->formatTimestamp($newFormat, $timestamp, $locale);
-				}
-				else {
-					$result .= $code;
-				}
-				$i += mb_strlen($code) - 1;
 				continue;
 			}
 
