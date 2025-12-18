@@ -7,53 +7,53 @@ use Sunkan\Dictus\LocaleFormat;
 final class SvSe implements LocaleFormat
 {
 	private const MONTHS_SHORT = [
-		1 => 'Jan',
-		2 => 'Feb',
-		3 => 'Mar',
-		4 => 'Apr',
-		5 => 'Maj',
-		6 => 'Jun',
-		7 => 'Jul',
-		8 => 'Aug',
-		9 => 'Sep',
-		10 => 'Okt',
-		11 => 'Nov',
-		12 => 'Dec',
+		1 => 'jan.',
+		2 => 'feb.',
+		3 => 'mars',
+		4 => 'apr.',
+		5 => 'maj',
+		6 => 'juni',
+		7 => 'juli',
+		8 => 'aug.',
+		9 => 'sep.',
+		10 => 'okt.',
+		11 => 'nov.',
+		12 => 'dec.',
 	];
 
 	private const MONTHS_LONG = [
-		1 => 'Januari',
-		2 => 'Februari',
-		3 => 'Mars',
-		4 => 'April',
-		5 => 'Maj',
-		6 => 'Juni',
-		7 => 'Juli',
-		8 => 'Augusti',
-		9 => 'September',
-		10 => 'Oktober',
-		11 => 'November',
-		12 => 'December',
+		1 => 'januari',
+		2 => 'februari',
+		3 => 'mars',
+		4 => 'april',
+		5 => 'maj',
+		6 => 'juni',
+		7 => 'juli',
+		8 => 'augusti',
+		9 => 'september',
+		10 => 'oktober',
+		11 => 'november',
+		12 => 'december',
 	];
 
 	private const DAYS_SHORT = [
 		1 => 'mån',
 		2 => 'tis',
 		3 => 'ons',
-		4 => 'tor',
+		4 => 'tors',
 		5 => 'fre',
 		6 => 'lör',
 		7 => 'sön',
 	];
 
 	private const DAYS_LONG = [
-		1 => 'Måndag',
-		2 => 'Tisdag',
-		3 => 'Onsdag',
-		4 => 'Torsdag',
-		5 => 'Fredag',
-		6 => 'Lördag',
-		7 => 'Söndag',
+		1 => 'måndag',
+		2 => 'tisdag',
+		3 => 'onsdag',
+		4 => 'torsdag',
+		5 => 'fredag',
+		6 => 'lördag',
+		7 => 'söndag',
 	];
 
 	public function formatChar(string $char, \DateTimeImmutable $dateTime): ?string
@@ -72,10 +72,13 @@ final class SvSe implements LocaleFormat
 		return match($format) {
 			'LT' => 'H:i',
 			'LTS' => 'H:i:s',
-			'L' => 'd.m.Y',
+			'L' => 'Y-m-d',
 			'LL' => 'j F Y',
-			'LLL' => 'j F [kl.] H:i',
+			'll' => 'j M Y',
+			'LLL' => 'j F Y [kl.] H:i',
+			'lll' => 'j M Y H:i',
 			'LLLL' => 'l j F Y [kl.] H:i',
+			'llll' => 'D j M Y H:i',
 			default => null,
 		};
 	}

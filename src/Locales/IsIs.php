@@ -7,13 +7,13 @@ use Sunkan\Dictus\LocaleFormat;
 final class IsIs implements LocaleFormat
 {
 	private const DAYS_SHORT = [
-		1 => 'mán',
-		2 => 'þri',
-		3 => 'mið',
-		4 => 'fim',
-		5 => 'fös',
-		6 => 'lau',
-		7 => 'sun',
+		1 => 'mán.',
+		2 => 'þri.',
+		3 => 'mið.',
+		4 => 'fim.',
+		5 => 'fös.',
+		6 => 'lau.',
+		7 => 'sun.',
 	];
 
 	private const DAYS_LONG = [
@@ -27,18 +27,18 @@ final class IsIs implements LocaleFormat
 	];
 
 	private const MONTHS_SHORT = [
-		1 => 'jan',
-		2 => 'feb',
-		3 => 'mar',
-		4 => 'apr',
+		1 => 'jan.',
+		2 => 'feb.',
+		3 => 'mar.',
+		4 => 'apr.',
 		5 => 'maí',
-		6 => 'jún',
-		7 => 'júl',
-		8 => 'ágú',
-		9 => 'sep',
-		10 => 'okt',
-		11 => 'nóv',
-		12 => 'des',
+		6 => 'jún.',
+		7 => 'júl.',
+		8 => 'ágú.',
+		9 => 'sep.',
+		10 => 'okt.',
+		11 => 'nóv.',
+		12 => 'des.',
 	];
 
 	private const MONTHS_LONG = [
@@ -72,10 +72,13 @@ final class IsIs implements LocaleFormat
 		return match($format) {
 			'LT' => 'H:i',
 			'LTS' => 'H:i:s',
-			'L' => 'd.m.Y',
+			'L' => 'j.n.Y',
 			'LL' => 'j. F Y',
-			'LLL' => 'j. F [kl.] H:i',
-			'LLLL' => 'l j. F Y [kl.] H:i',
+			'll' => 'j. M Y',
+			'LLL' => 'j. F Y [kl.] H:i',
+			'lll' => 'j. M Y, H:i',
+			'LLLL' => 'l, j. F Y [kl.] H:i',
+			'llll' => 'D j. M Y, H:i',
 			default => null,
 		};
 	}
