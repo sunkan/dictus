@@ -23,9 +23,9 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 		private string $format,
 	) {}
 
-	public function setLocale(string $local): void
+	public function setLocale(string $locale): void
 	{
-		$this->locale = $local;
+		$this->locale = $locale;
 	}
 
 	public function setFormat(string $format): void
