@@ -1,7 +1,6 @@
 <?php declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Sunkan\Dictus\DateTimeFormat;
 use Sunkan\Dictus\LocalizedDateTimeFormatter;
 
 final class LocalizedDateTimeFormatterTest extends TestCase
@@ -13,7 +12,7 @@ final class LocalizedDateTimeFormatterTest extends TestCase
 
 		$date = new DateTimeImmutable('2023-08-21 16:26:14');
 
-		$this->assertSame('mánudagur 21. ágúst kl. 16:26 Test', $formatter->format($date));
+		$this->assertSame('mánudagur 21. ágúst 2023 kl. 16:26 Test', $formatter->format($date));
 	}
 
 	public function testEnglishFormat(): void
@@ -23,6 +22,6 @@ final class LocalizedDateTimeFormatterTest extends TestCase
 
 		$date = new DateTimeImmutable('2023-08-21 16:26:14');
 
-		$this->assertSame('Monday 21 August 16:26 Test', $formatter->format($date));
+		$this->assertSame('Monday 21 August 2023 at 16:26 Test', $formatter->format($date));
 	}
 }
