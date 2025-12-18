@@ -39,6 +39,12 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 		return $this->strftime($this->format, $date, $this->locale);
 	}
 
+	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string
+	{
+		$date = DateTimeImmutable::createFromInterface($timestamp);
+		return $this->strftime($format, $date, $this->locale);
+	}
+
 	private function strftime(string $format, DateTimeImmutable $timestamp, string $local): string
 	{
 		// remove trailing part not supported by ext-intl locale

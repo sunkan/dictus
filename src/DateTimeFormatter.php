@@ -17,4 +17,9 @@ final class DateTimeFormatter implements Formatter, MutableFormatter
 	{
 		$this->format = $format;
 	}
+
+	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string
+	{
+		return $timestamp->format($format);
+	}
 }
