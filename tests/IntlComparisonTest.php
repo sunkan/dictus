@@ -88,6 +88,12 @@ final class IntlComparisonTest extends TestCase
 		return $ret;
 	}
 
+	public static function setUpBeforeClass(): void
+	{
+		parent::setUpBeforeClass();
+		self::checkIcuDataVersion();
+	}
+
 	/**
 	 * @dataProvider provideMonths
 	 */
@@ -211,6 +217,26 @@ final class IntlComparisonTest extends TestCase
 				(string)$intlFormatter->format($date),
 				$formatter->format($date),
 			);
+		}
+	}
+
+	private static function checkIcuDataVersion(): void
+	{
+		try {
+			$reflector = new \ReflectionExtension('intl');
+			ob_start();
+			$reflector->info();
+			$output = strip_tags((string)ob_get_clean());
+			preg_match('/^ICU Data version (?:=>)?(.*)$/m', $output, $matches);
+			$icuDataVersion = trim($matches[1]);
+		} catch (\ReflectionException) {
+			$icuDataVersion = '';
+		}
+		if ((int)$icuDataVersion < 76) {
+			self::markTestSkipped(sprintf(
+				'Intl comparison tests expect ICU Data version to be at least 76. Current is %s',
+				$icuDataVersion,
+			));
 		}
 	}
 
