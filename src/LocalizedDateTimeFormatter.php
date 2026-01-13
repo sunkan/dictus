@@ -46,11 +46,12 @@ final class LocalizedDateTimeFormatter implements LocalizedFormatter, MutableFor
 
 	public function format(\DateTimeInterface $date): string
 	{
-		return $this->formatTimestamp($this->format, \DateTimeImmutable::createFromInterface($date));
+		return $this->formatDate($this->format, $date);
 	}
 
-	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string
+	public function formatDate(string $format, \DateTimeInterface $date): string
 	{
+		$timestamp = \DateTimeImmutable::createFromInterface($date);
 		foreach (self::LOCALIZED_SHORT_FORMATS as $localizedFormat) {
 			if (!str_contains($format, $localizedFormat)) {
 				continue;

@@ -18,8 +18,8 @@ final class DateTimeFormatter implements Formatter, MutableFormatter
 		$this->format = $format;
 	}
 
-	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string
+	public function formatDate(string $format, \DateTimeInterface $date): string
 	{
-		return $timestamp->format($format);
+		return $date->format($format);
 	}
 }
