@@ -6,5 +6,8 @@ interface Formatter
 {
 	public function format(\DateTimeInterface $date): string;
 
-	public function formatDate(string $format, \DateTimeInterface $date): string;
+	/**
+	 * @deprecated use FormatterDateTime::formatDate
+	 */
+	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string;
 }

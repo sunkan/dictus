@@ -2,7 +2,7 @@
 
 namespace Sunkan\Dictus;
 
-final class LocalizedDateTimeFormatter implements LocalizedFormatter, MutableFormatter
+final class LocalizedDateTimeFormatter implements LocalizedFormatter, MutableFormatter, FormatterDateTime
 {
 	private const LOCALIZED_SHORT_FORMATS = [
 		// Sorting this list correctly is important because of how we replace from it
@@ -47,6 +47,11 @@ final class LocalizedDateTimeFormatter implements LocalizedFormatter, MutableFor
 	public function format(\DateTimeInterface $date): string
 	{
 		return $this->formatDate($this->format, $date);
+	}
+
+	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string
+	{
+		return $this->formatDate($format, $timestamp);
 	}
 
 	public function formatDate(string $format, \DateTimeInterface $date): string

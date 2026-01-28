@@ -2,7 +2,7 @@
 
 namespace Sunkan\Dictus;
 
-final class DateTimeFormatter implements Formatter, MutableFormatter
+final class DateTimeFormatter implements FormatterDateTime, MutableFormatter
 {
 	public function __construct(
 		private string $format,
@@ -16,6 +16,11 @@ final class DateTimeFormatter implements Formatter, MutableFormatter
 	public function setFormat(string $format): void
 	{
 		$this->format = $format;
+	}
+
+	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string
+	{
+		return $timestamp->format($format);
 	}
 
 	public function formatDate(string $format, \DateTimeInterface $date): string

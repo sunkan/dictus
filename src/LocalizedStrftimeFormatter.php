@@ -5,7 +5,7 @@ namespace Sunkan\Dictus;
 use DateTimeImmutable;
 use IntlDateFormatter;
 
-final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFormatter
+final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFormatter, FormatterDateTime
 {
 	private const INTL_FORMATS = [
 		'%a' => 'EEE',    // An abbreviated textual representation of the day	Sun through Sat
@@ -37,6 +37,11 @@ final class LocalizedStrftimeFormatter implements LocalizedFormatter, MutableFor
 	{
 		$date = DateTimeImmutable::createFromInterface($date);
 		return $this->strftime($this->format, $date, $this->locale);
+	}
+
+	public function formatTimestamp(string $format, \DateTimeImmutable $timestamp): string
+	{
+		return $this->strftime($format, $timestamp, $this->locale);
 	}
 
 	public function formatDate(string $format, \DateTimeInterface $date): string
